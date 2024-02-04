@@ -51,14 +51,14 @@ sheep_rect.centerx = SCREEN_WIDTH / 2
 bomb_image = pygame.image.load("assets/bomp.png")
 bomb_rect = bomb_image.get_rect()
 bomb_rect.bottom = SCREEN_HEIGHT
-bomb_rect.centerx = SCREEN_WIDTH / 2
+bomb_rect.centerx = random.randint(0, SCREEN_WIDTH)
 
 font = pygame.font.Font("assets/f.otf", 48)
 score = 0
 score_text = font.render(f"Score:{score}", True, (255, 0, 255))
 score_rect = score_text.get_rect()
 score_rect.top = 0
-score_rect.centerx = random.randint(0, SCREEN_WIDTH)
+score_rect.centerx = SCREEN_WIDTH / 2
 
 lives = 3
 lives_text = font.render(f"Lives: {lives}", True, (255, 0, 0))
@@ -73,14 +73,14 @@ while running == True:
         if event.type == pygame.QUIT:
             running = False
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP]:
+    if keys[pygame.K_UP] and wolf_rect.top > 100:
         wolf_rect.y -= 5
-    if keys[pygame.K_DOWN]:
+    if keys[pygame.K_DOWN] and wolf_rect.bottom < SCREEN_HEIGHT:
         wolf_rect.y += 5
 
-    if keys[pygame.K_LEFT]:
+    if keys[pygame.K_LEFT] and wolf_rect.left > 0:
         wolf_rect.x -= 5
-    if keys[pygame.K_RIGHT]:
+    if keys[pygame.K_RIGHT] and wolf_rect.right < SCREEN_WIDTH:
         wolf_rect.x += 5
 
     sheep_rect.y -= 5
@@ -118,3 +118,4 @@ while running == True:
     c.tick(FPS)
 
     pygame.display.update()
+    
