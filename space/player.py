@@ -8,6 +8,9 @@ class Player(Sprite):
         self.rect = self.image.get_rect()
         self.rect.bottom = SCREEN_HEIGHT
         self.rect.centerx = SCREEN_WIDTH/2
+        self.score = 0
+        self.lives = 3
+        
     def draw(self):
         screen.blit(self.image, self.rect)    
     def move(self):
