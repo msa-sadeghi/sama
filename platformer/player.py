@@ -17,20 +17,37 @@ class Player(Sprite):
         self.rect.topleft = (x,y)
         self.yVel = 0
         self.image_update_time = pygame.time.get_ticks()
+        self.moving_status = False
+        self.direction = 1
+        self.in_air = False
     def update(self, tiles)    :
         dx = 0
         dy = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
+            self.direction = -1
+            self.moving_status = True
             dx -= 5
         if keys[pygame.K_RIGHT]:
+            self.direction = 1
+            self.moving_status = True
             dx += 5
+        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.moving_status = False
+        if keys[pygame.K_SPACE]  and not self.in_air  :
+            self.yVel = -15
+            self.in_air = True
         dy += self.yVel
         self.yVel += 1
         for t in tiles:
             if t[1].colliderect(self.rect.x, self.rect.y + dy, self.rect.size[0], self.rect.size[1]):
-                self.yVel = 0
-                dy = t[1].top - self.rect.bottom
+                if self.yVel > 0:
+                    self.yVel = 0
+                    dy = t[1].top - self.rect.bottom
+                    self.in_air = False
+                else:
+                    self.yVel = 0
+                    dy = t[1].bottom - self.rect.top
             if t[1].colliderect(self.rect.x + dx, self.rect.y, self.rect.size[0], self.rect.size[1]):
                 dx = 0    
         self.rect.x += dx
@@ -40,12 +57,17 @@ class Player(Sprite):
         screen.blit(self.image, self.rect)
 
     def animation(self):
-        if pygame.time.get_ticks() - self.image_update_time > 100:
+        if pygame.time.get_ticks() - self.image_update_time > 100 and self.moving_status:
             self.image_number += 1
             self.image_update_time = pygame.time.get_ticks()
+        if not self.moving_status:
+            self.image_number = 0
         if self.image_number >= len(self.right_images):
             self.image_number = 0
-        self.image = self.right_images[self.image_number]
+        if self.direction == 1:
+            self.image = self.right_images[self.image_number]
+        elif self.direction == -1:
+            self.image = self.left_images[self.image_number]
         
         
         
