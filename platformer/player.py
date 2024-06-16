@@ -20,7 +20,17 @@ class Player(Sprite):
         self.moving_status = False
         self.direction = 1
         self.in_air = False
-    def update(self, tiles)    :
+        self.alive = True
+        self.ghost_image = pygame.image.load("assets/ghost.png")
+    
+    def ghost_move(self):
+        if self.rect.y > 100:
+            self.rect.y -= 3
+    
+    def update(self, tiles, enemy_group)    :
+        if pygame.sprite.spritecollide(self, enemy_group, True):
+            self.alive = False
+        
         dx = 0
         dy = 0
         keys = pygame.key.get_pressed()
@@ -54,6 +64,8 @@ class Player(Sprite):
         self.rect.y += dy
         self.animation()
     def draw(self, screen):
+        if self.alive == False:
+            self.image = self.ghost_image
         screen.blit(self.image, self.rect)
 
     def animation(self):

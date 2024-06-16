@@ -3,6 +3,9 @@ from constants import *
 from world import World
 from level_creator import world_data
 from player import Player
+from button import Button
+restart_image = pygame.image.load("assets/restart_btn.png")
+restart_button = Button(restart_image, screen_width/2, screen_height/2)
 pygame.init()
 screen = pygame.display.set_mode((screen_width, screen_height))
 level_number = 1
@@ -20,9 +23,18 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     screen.blit(bg_img, (0,0))
-    world.draw(screen)          
+    world.draw(screen) 
+            
     player.draw(screen)
-    player.update(world.tile_list)
+    if player.alive == True:
+        player.update(world.tile_list, enemy_group)
+    else:
+        player.ghost_move()
+        if restart_button.draw(screen):
+            player.__init__(100,screen_height-300)
+            enemy_group.empty()
+            world = World(world_data, enemy_group)
+        
     enemy_group.update()
     enemy_group.draw(screen)
     pygame.display.update()
