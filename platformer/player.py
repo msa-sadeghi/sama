@@ -8,6 +8,9 @@ class Player(Sprite):
         self.left_images = []
         for i in range(1,5):
             img = pygame.image.load(f"assets/guy{i}.png")
+            img_w = img.get_width()
+            img_h = img.get_height()
+            img = pygame.transform.scale(img, (img_w * 0.6, img_h * 0.6))
             self.right_images.append(img)
             img = pygame.transform.flip(img, True, False)
             self.left_images.append(img)
@@ -22,14 +25,17 @@ class Player(Sprite):
         self.in_air = False
         self.alive = True
         self.ghost_image = pygame.image.load("assets/ghost.png")
+        self.next_level = False
     
     def ghost_move(self):
         if self.rect.y > 100:
             self.rect.y -= 3
     
-    def update(self, tiles, enemy_group)    :
+    def update(self, tiles, enemy_group, door_group)    :
         if pygame.sprite.spritecollide(self, enemy_group, True):
             self.alive = False
+        if pygame.sprite.spritecollide(self, door_group, False):
+            self.next_level = True
         
         dx = 0
         dy = 0
