@@ -16,3 +16,6 @@ class Castle(Sprite):
         self.image = self.image_100
         self.rect = self.image.get_rect()
         self.rect.topleft = (x,y)
+        
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
