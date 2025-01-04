@@ -33,10 +33,13 @@ class Character(Sprite):
         self.image = self.all_images[self.action][self.image_number]
         self.rect = self.image.get_rect(topleft=(x, y))
         self.last_image_change_time = 0
+        self.flip = False
 
     def draw(self, screen):
         self.animation()
-        screen.blit(self.all_images[self.action][self.image_number], self.rect)
+        img = self.all_images[self.action][self.image_number]
+        img = pygame.transform.flip(img, self.flip, False)
+        screen.blit(img, self.rect)
 
     def animation(self):
         if pygame.time.get_ticks() - self.last_image_change_time > 100:
@@ -44,3 +47,19 @@ class Character(Sprite):
             self.image_number += 1
             if self.image_number >= len(self.all_images[self.action]):
                 self.image_number = 0
+    def move(self, moving_left, moving_right):
+        dx = 0
+        if  moving_left:
+            self.flip = True
+            dx -= 5
+        elif moving_right:
+            self.flip = False
+            dx += 5
+        
+        self.rect.x += dx
+        
+    def change_animation(self, new_animation):
+        if self.action != new_animation:
+            self.action = new_animation
+            self.image_number = 0
+            self.last_image_change_time = pygame.time.get_ticks()
