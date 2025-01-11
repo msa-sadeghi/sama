@@ -34,6 +34,8 @@ class Character(Sprite):
         self.rect = self.image.get_rect(topleft=(x, y))
         self.last_image_change_time = 0
         self.flip = False
+        self.gravity = 0
+        self.on_ground = True
 
     def draw(self, screen):
         self.animation()
@@ -49,13 +51,21 @@ class Character(Sprite):
                 self.image_number = 0
     def move(self, moving_left, moving_right):
         dx = 0
+        dy = 0
+        self.gravity += 1
+        dy += self.gravity
         if  moving_left:
             self.flip = True
             dx -= 5
         elif moving_right:
             self.flip = False
             dx += 5
-        
+        if self.rect.bottom + dy > 300:
+            dy = 300 - self.rect.bottom
+            self.gravity = 0 
+            self.on_ground = True   
+            
+        self.rect.y += dy
         self.rect.x += dx
         
     def change_animation(self, new_animation):
