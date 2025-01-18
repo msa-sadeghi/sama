@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 import os
-
+from bullet import Bullet
 
 class Character(Sprite):
     def __init__(self, type_, x, y, ammo, grenades):
@@ -36,6 +36,8 @@ class Character(Sprite):
         self.flip = False
         self.gravity = 0
         self.on_ground = True
+        self.direction = 1
+        self.last_shoot_time = 0
 
     def draw(self, screen):
         self.animation()
@@ -56,10 +58,12 @@ class Character(Sprite):
         dy += self.gravity
         if  moving_left:
             self.flip = True
+            self.direction = -1
             dx -= 5
         elif moving_right:
             self.flip = False
             dx += 5
+            self.direction = 1
         if self.rect.bottom + dy > 300:
             dy = 300 - self.rect.bottom
             self.gravity = 0 
@@ -73,3 +77,14 @@ class Character(Sprite):
             self.action = new_animation
             self.image_number = 0
             self.last_image_change_time = pygame.time.get_ticks()
+            
+    def shoot(self, weapon_group):
+        if pygame.time.get_ticks() - self.last_shoot_time > 100:
+            self.last_shoot_time = pygame.time.get_ticks()
+            Bullet(self.type,
+                self.rect.centerx + self.direction * self.rect.size[0] * 0.5,
+                self.rect.centery,
+                weapon_group,
+                self.direction
+                )
+        
