@@ -2,7 +2,7 @@ import pygame
 from pygame.sprite import Sprite
 import os
 from bullet import Bullet
-
+from grenade import Grenade
 class Character(Sprite):
     def __init__(self, type_, x, y, ammo, grenades):
         super().__init__()
@@ -78,13 +78,24 @@ class Character(Sprite):
             self.image_number = 0
             self.last_image_change_time = pygame.time.get_ticks()
             
-    def shoot(self, weapon_group):
-        if pygame.time.get_ticks() - self.last_shoot_time > 100:
-            self.last_shoot_time = pygame.time.get_ticks()
-            Bullet(self.type,
-                self.rect.centerx + self.direction * self.rect.size[0] * 0.5,
-                self.rect.centery,
-                weapon_group,
-                self.direction
-                )
+    def shoot(self,type, weapon_group):
+        if type == "bullet":
+            if pygame.time.get_ticks() - self.last_shoot_time > 100:
+                self.last_shoot_time = pygame.time.get_ticks()
+                Bullet(self.type,
+                    self.rect.centerx + self.direction * self.rect.size[0] * 0.5,
+                    self.rect.centery,
+                    weapon_group,
+                    self.direction
+                    )
+        elif type == "grenade":
+            if pygame.time.get_ticks() - self.last_shoot_time > 100:
+                self.last_shoot_time = pygame.time.get_ticks()
+                Grenade(
+                    self.rect.centerx + self.direction * self.rect.size[0] * 0.5,
+                    self.rect.centery,
+                    weapon_group,
+                    self.direction
+                    )
+            
         
