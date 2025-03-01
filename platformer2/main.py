@@ -3,6 +3,7 @@ from character import Character
 clock = pygame.time.Clock()
 weapon_group = pygame.sprite.Group()
 grenade_group = pygame.sprite.Group()
+explosion_group = pygame.sprite.Group()
 moving_left = False
 moving_right = False
 jumped = False
@@ -59,8 +60,10 @@ while running == True:
     screen.fill((0,0,0))
     weapon_group.update()
     weapon_group.draw(screen)
-    grenade_group.update()
+    grenade_group.update(explosion_group)
     grenade_group.draw(screen)
+    explosion_group.update()
+    explosion_group.draw(screen)
     my_player.draw(screen)        
     pygame.display.update()
     clock.tick(FPS)
