@@ -1,5 +1,13 @@
 import pygame
 from player import Player
+from world import map
+tile_image = pygame.image.load("./images/icons/tile.png")
+def create_world():
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            if map[i][j] == 1:
+                screen.blit(tile_image, (j * 32 , i *32))
+
 pygame.init()
 width = 1024
 height = 640
@@ -15,6 +23,7 @@ while running == True:
         if event.type == pygame.QUIT:
             running = False
     screen.fill("lightgreen")
+    create_world()
     my_player.draw(screen)
     my_player.move()
     pygame.display.update()
