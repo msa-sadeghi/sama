@@ -1,14 +1,13 @@
 import pygame
 from player import Player
 pygame.init()
-width = 1000
-height = 600
+width = 1024
+height = 640
 clock = pygame.time.Clock()
 fps = 60
 screen = pygame.display.set_mode((width, height))
 
 my_player = Player(100, 300)
-
 
 running = True
 while running == True:
