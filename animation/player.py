@@ -23,6 +23,7 @@ class Player(Sprite):
         self.animation_time = pygame.time.get_ticks()
         self.flip = False
         self.moving = False
+        self.yspeed = 0
 
     def draw(self, screen):
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
@@ -54,6 +55,15 @@ class Player(Sprite):
             dx += 5
         if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
             self.moving = False
+        if keys[pygame.K_UP]:
+            self.yspeed =  -14
+        self.yspeed += 1
+        dy += self.yspeed
+        
+        if self.rect.bottom + dy >= 400:
+            dy = 400 -self.rect.bottom
+            self.yspeed = 0
+        
         self.rect.x += dx
         self.rect.y += dy
     def change_animation(self, new_action):
