@@ -18,10 +18,20 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+    if my_ninja.in_air == True:
+        my_ninja.change_animation("Jump")
+    
+    elif my_ninja.slide == True:
+        my_ninja.change_animation("Slide")
+    
+    elif my_ninja.idle == False:
+        my_ninja.change_animation("Run")
+    elif my_ninja.idle == True:
+        my_ninja.change_animation("Idle")
     screen.fill((0, 0, 0))
     screen.blit(bg_image, bg_image_rect)
     my_ninja.draw(screen)
     my_ninja.move_horizontal()
+    my_ninja.move_vertical()
     pygame.display.update()
 pygame.quit()

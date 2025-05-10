@@ -25,6 +25,9 @@ class Ninja(Sprite):
         self.last_update_time = pygame.time.get_ticks()
         self.direction = 1
         self.idle = True
+        self.slide = False
+        self.y_speed = 0
+        self.in_air = False
 
     def next_costume(self):
         self.image = self.all_images[self.animation][self.frame_index]
@@ -51,10 +54,37 @@ class Ninja(Sprite):
             self.idle = False
             self.direction = -1
             dx -= 5
+        
         if keys[pygame.K_RIGHT]:
             self.idle = False
             self.direction = 1
             dx += 5
+       
+        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+            self.idle = True
+
+        if keys[pygame.K_DOWN] and self.idle == False:
+            self.slide = True
+        else:
+            self.slide = False
 
         self.rect.x += dx
-       
+    
+
+    def move_vertical(self):
+        dy = 0
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_UP]:
+            self.y_speed = -15
+            self.in_air = True
+
+        dy += self.y_speed
+        self.y_speed += 1
+
+        if self.rect.bottom + dy > 500:
+            self.y_speed = 0
+            dy = 500 - self.rect.bottom
+            self.in_air = False
+
+        self.rect.y += dy
+
