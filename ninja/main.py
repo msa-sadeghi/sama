@@ -12,13 +12,18 @@ screen = pygame.display.set_mode((WIDTH, HEIGTH))
 pygame.display.set_caption("Ninja Game")
 
 my_ninja = Ninja(100, 100)
-
+anim_type = ''
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if my_ninja.in_air == True:
+    
+    if my_ninja.throw == True:
+        my_ninja.change_animation('Throw')
+    elif anim_type != '':
+        my_ninja.change_animation(anim_type)
+    elif my_ninja.in_air == True:
         my_ninja.change_animation("Jump")
     
     elif my_ninja.slide == True:
@@ -28,6 +33,11 @@ while running:
         my_ninja.change_animation("Run")
     elif my_ninja.idle == True:
         my_ninja.change_animation("Idle")
+
+
+    anim_type = my_ninja.other_animation()
+
+
     screen.fill((0, 0, 0))
     screen.blit(bg_image, bg_image_rect)
     my_ninja.draw(screen)

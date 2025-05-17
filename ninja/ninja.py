@@ -28,6 +28,7 @@ class Ninja(Sprite):
         self.slide = False
         self.y_speed = 0
         self.in_air = False
+        self.throw = False
 
     def next_costume(self):
         self.image = self.all_images[self.animation][self.frame_index]
@@ -78,6 +79,11 @@ class Ninja(Sprite):
             self.y_speed = -15
             self.in_air = True
 
+        if keys[pygame.K_SPACE]:
+            self.throw = True
+        else:
+            self.throw = False
+
         dy += self.y_speed
         self.y_speed += 1
 
@@ -88,3 +94,9 @@ class Ninja(Sprite):
 
         self.rect.y += dy
 
+    def other_animation(self):
+        anim_type = ''
+        if pygame.mouse.get_pressed()[0]:
+            anim_type = "Attack"
+
+        return anim_type
